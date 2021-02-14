@@ -1,0 +1,51 @@
+version: '3.6'
+services:
+  workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile.workspace
+    env_file: devcontainer.env
+    environment:
+      - TZ=Asia/Tokyo
+      - DB_DATABASE=devcontainer_testing
+    volumes:
+      - ..:/workspace:cached
+      - ./etc/workspace/php.ini:/usr/local/etc/php/php.ini:ro
+    command: /bin/sh -c "while sleep 1000; do :; done"
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    env_file: devcontainer.env
+    ports:
+      - "8080:80"
+    volumes:
+      - ..:/var/devcontainer
+      - ./etc/web/php.ini:/usr/local/etc/php/php.ini:ro
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=default
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - laravel-devcontainer-mysql:/var/lib/mysql
+      - ./etc/db/mysql/conf.d:/etc/mysql/conf.d:ro
+      - ./etc/db/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=db
+    ports:
+      - "8082:80"
+    depends_on:
+      - db
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+volumes:
+  laravel-devcontainer-mysql:
