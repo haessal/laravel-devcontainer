@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+groupmod -g $USER_GID -o $USERNAME
+usermod -u $USER_UID -g $USER_GID -o $USERNAME
+
+while sleep 1000; do :; done

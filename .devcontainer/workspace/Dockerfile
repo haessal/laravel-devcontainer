@@ -40,9 +40,13 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 # Install phpDocumenter
 RUN curl -sS -L -o /usr/local/bin/phpdoc https://phpdoc.org/phpDocumentor.phar && chmod +x /usr/local/bin/phpdoc
 
-ARG USERNAME=developer
-ARG USER_UID=1000
-ARG USER_GID=1000
+ENV USERNAME=developer
+ENV USER_UID=9001
+ENV USER_GID=9001
 RUN groupadd --gid $USER_GID ${USERNAME} \
         && useradd -s /bin/bash --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
         && echo 'source /usr/local/etc/git-completion.bash' >> /home/${USERNAME}/.bashrc
+
+COPY devcontainer-workspace-start /usr/local/bin/
+
+CMD ["devcontainer-workspace-start"]

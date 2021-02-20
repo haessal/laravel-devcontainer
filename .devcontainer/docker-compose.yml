@@ -8,15 +8,19 @@ services:
     environment:
       - TZ=Asia/Tokyo
       - DB_DATABASE=devcontainer_testing
+      - USER_UID=66644
+      - USER_GID=66049
     volumes:
       - ..:/workspace:cached
       - ./etc/workspace/php.ini:/usr/local/etc/php/php.ini:ro
-    command: /bin/sh -c "while sleep 1000; do :; done"
   web:
     build:
       context: ./web
       dockerfile: Dockerfile
     env_file: devcontainer.env
+    environment:
+      - WWW_DATA_UID=66644
+      - WWW_DATA_GID=66049
     ports:
       - "8080:80"
     volumes:
