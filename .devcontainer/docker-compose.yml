@@ -2,8 +2,8 @@ version: "3.3"
 services:
   workspace:
     build:
-      context: .
-      dockerfile: Dockerfile.workspace
+      context: ./workspace
+      dockerfile: Dockerfile
     env_file: devcontainer.env
     environment:
       - TZ=Asia/Tokyo
@@ -14,8 +14,8 @@ services:
     command: /bin/sh -c "while sleep 1000; do :; done"
   web:
     build:
-      context: .
-      dockerfile: Dockerfile.web
+      context: ./web
+      dockerfile: Dockerfile
     env_file: devcontainer.env
     ports:
       - "8080:80"
