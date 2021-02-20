@@ -12,7 +12,7 @@ services:
       - USER_GID=66049
     volumes:
       - ..:/workspace:cached
-      - ./etc/workspace/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./workspace/php.ini:/usr/local/etc/php/php.ini:ro
   web:
     build:
       context: ./web
@@ -25,7 +25,7 @@ services:
       - "8080:80"
     volumes:
       - ..:/var/devcontainer
-      - ./etc/web/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./web/php.ini:/usr/local/etc/php/php.ini:ro
     depends_on:
       - db
   db:
@@ -36,8 +36,8 @@ services:
       - MYSQL_PASSWORD=secret
     volumes:
       - laravel-devcontainer-mysql:/var/lib/mysql
-      - ./etc/db/mysql/conf.d:/etc/mysql/conf.d:ro
-      - ./etc/db/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - ./db/mysql/conf.d:/etc/mysql/conf.d:ro
+      - ./db/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
