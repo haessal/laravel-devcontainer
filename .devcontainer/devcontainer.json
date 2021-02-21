@@ -1,5 +1,6 @@
 {
     "name": "laravel-devcontainer",
+    "initializeCommand": ".devcontainer/initialize",
     "dockerComposeFile": [
         "docker-compose.yml"
     ],
